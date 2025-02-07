@@ -47,5 +47,5 @@
 - **LED Indicators**: Connected to Arduino digital pins for visual feedback.
 - **Wires & Connectors**: Used to establish proper connections between components.
 
-This setup ensures that the robot can move in different directions, operate the robotic arm, and respond to voice commands received via Bluetooth.
+
 
