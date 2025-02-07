@@ -1,100 +1,117 @@
 #include <LiquidCrystal.h>
-LiquidCrystal lcd (13, 12, 11, 10, 9, 8);
+LiquidCrystal lcd(13, 12, 11, 10, 9, 8);
+
 #include <Servo.h>
 Servo claw_servo;
 Servo up_down_servo;
 Servo Arm_rot_servo;
+
 #define IN_1 A0
 #define IN_2 A1
 #define IN_3 A2
 #define IN_4 A3
+
 char inchar;
-void goAhead () {
-digitalWrite (IN_1, LOW);
-digitalWrite (IN_2, HIGH);z
-digitalWrite (IN_3, LOW);
-digitalWrite (IN_4, HIGH);
-}
-void goBack () {
-digitalWrite (IN_1, HIGH);
-digitalWrite (IN_2, LOW);
-digitalWrite (IN_3, HIGH);
-digitalWrite (IN_4, LOW);
-}
-void goRight(){
-digitalWrite(IN_1, HIGH);
-digitalWrite(IN_2, LOW);
-digitalWrite(IN_3, LOW);
-digitalWrite(IN_4, HIGH);
-}
-void goLeft(){
-digitalWrite(IN_1, LOW);
-digitalWrite(IN_2, HIGH);
-digitalWrite(IN_3, HIGH);
-digitalWrite(IN_4, LOW);
-}
-void stopRobot(){
-digitalWrite(IN_1, LOW);
-digitalWrite(IN_2, LOW);
-digitalWrite(IN_3, LOW);
-digitalWrite(IN_4, LOW);
-}
-void pick()
-{
-claw_servo.write(30);
-void arm_down()
-{
-up_down_servo.write(0);
-delay(200);
-}
-void setup()
-{
-Serial.begin(9600);
-claw_servo.attach(6);
-up_down_servo.attach(3);
-Arm_rot_servo.attach(5);
-Serial.begin(9600);
-lcd.begin(16, 2);
-lcd.setCursor(0,0);
-lcd.print("Robotic Arm Cntr");
-lcd.setCursor(0,1);
-lcd.print(" ");
-pinMode(IN_1, OUTPUT);
-pinMode(IN_2, OUTPUT);
 
-pinMode(IN_3, OUTPUT);
-pinMode(IN_4, OUTPUT);
-stopRobot();
-Arm_rot_servo.write(0);claw_servo.write(0); up_down_servo.write(30);
-delay(1000);
+void goAhead() {
+    digitalWrite(IN_1, LOW);
+    digitalWrite(IN_2, HIGH);
+    digitalWrite(IN_3, LOW);
+    digitalWrite(IN_4, HIGH);
 }
-void loop()
-{
-if(Serial.available())
-{
-inchar = Serial.read();
-Serial.print(inchar);
-}
-if(inchar=='1')
-pick();
-if(inchar=='2')
-place();
-if(inchar=='3')
-arm_up();
-if(inchar=='4')
-arm_down();
-if(inchar=='5')
-arm_turn();
-if(inchar=='6')
-arm_straight();
-if(inchar=='7')
-goAhead();
-if(inchar=='8')
-goBack();
-if(inchar=='A')
-goRight();
-if(inchar=='B')
-goLeft();
 
-if(inchar=='0')
-stopRobot ();}
+void goBack() {
+    digitalWrite(IN_1, HIGH);
+    digitalWrite(IN_2, LOW);
+    digitalWrite(IN_3, HIGH);
+    digitalWrite(IN_4, LOW);
+}
+
+void goRight() {
+    digitalWrite(IN_1, HIGH);
+    digitalWrite(IN_2, LOW);
+    digitalWrite(IN_3, LOW);
+    digitalWrite(IN_4, HIGH);
+}
+
+void goLeft() {
+    digitalWrite(IN_1, LOW);
+    digitalWrite(IN_2, HIGH);
+    digitalWrite(IN_3, HIGH);
+    digitalWrite(IN_4, LOW);
+}
+
+void stopRobot() {
+    digitalWrite(IN_1, LOW);
+    digitalWrite(IN_2, LOW);
+    digitalWrite(IN_3, LOW);
+    digitalWrite(IN_4, LOW);
+}
+
+void pick() {
+    claw_servo.write(30);  // Closes the gripper
+}
+
+void place() {
+    claw_servo.write(90);  // Opens the gripper
+}
+
+void arm_up() {
+    up_down_servo.write(90); // Moves the arm up
+}
+
+void arm_down() {
+    up_down_servo.write(0);  // Moves the arm down
+}
+
+void arm_turn() {
+    Arm_rot_servo.write(90); // Rotates the arm
+}
+
+void arm_straight() {
+    Arm_rot_servo.write(0);  // Straightens the arm
+}
+
+void setup() {
+    Serial.begin(9600);
+
+    claw_servo.attach(6);
+    up_down_servo.attach(3);
+    Arm_rot_servo.attach(5);
+
+    lcd.begin(16, 2);
+    lcd.setCursor(0, 0);
+    lcd.print("Robotic Arm Cntr");
+
+    pinMode(IN_1, OUTPUT);
+    pinMode(IN_2, OUTPUT);
+    pinMode(IN_3, OUTPUT);
+    pinMode(IN_4, OUTPUT);
+    stopRobot();
+
+    Arm_rot_servo.write(0);
+    claw_servo.write(90); // Default position
+    up_down_servo.write(30);
+    delay(1000);
+}
+
+void loop() {
+    if (Serial.available()) {
+        inchar = Serial.read();
+        Serial.print(inchar);
+        
+        switch (inchar) {
+            case '1': pick(); break;
+            case '2': place(); break;
+            case '3': arm_up(); break;
+            case '4': arm_down(); break;
+            case '5': arm_turn(); break;
+            case '6': arm_straight(); break;
+            case '7': goAhead(); break;
+            case '8': goBack(); break;
+            case 'A': goRight(); break;
+            case 'B': goLeft(); break;
+            case '0': stopRobot(); break;
+        }
+    }
+}
