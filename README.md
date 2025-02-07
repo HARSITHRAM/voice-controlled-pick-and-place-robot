@@ -89,5 +89,5 @@ This project is **open-source** under the MIT License.
 For any questions or collaboration, feel free to reach out:
 
 - **GitHub**: [@HARSITHRAM](https://github.com/HARSITHRAM)
-- **Email**: [harsithram](mailto\:harsithram08@gmail.com)
+- **Email**: [harsithram08@gmail.com](mailto:harsithram08@gmail.com)
 
